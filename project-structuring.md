@@ -1,4 +1,4 @@
-## 项目结构
+# 项目结构
 
 虽然有一些通用的项目结构指南，但是没有适合所有项目的结构。有兴趣的童鞋可以看看来自Node Hero系列的 [Nodejs 项目结构指南](https://blog.risingstack.com/node-hero-node-js-project-structure-tutorial/)。
 
