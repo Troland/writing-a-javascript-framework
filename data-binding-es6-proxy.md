@@ -31,19 +31,19 @@ setTimeout(() => person.name = 'Dave', 100)
 setTimeout(() => person.age = 22, 200)
 ```
 
-传入 `observe()` 的 `print` 函数在每当 `person.name` 或者 `person.age` 改变值的时候输出。`print` 被称为监听函数。
+传入 `observe()` 的 `print` 函数在每当 `person.name` 或者 `person.age` 值改变的时候返回值。`print` 被称为监听函数。
 
 如果你想要更多的示例，可以查看 [GitHub readme](https://github.com/RisingStack/nx-observe#example) 或者 [NX home page](http://nx-framework.com/docs/spa/observer) 以找到更多的生动的例子。
 
 ## 实现一个简单的被监听对象
 
-本小节，我将会阐述 nx-observe 的底层实现。首先，我将会向你展示监听函数是如何检测和比对可监听对象的属性值的改变的。然后我将会阐述一个运行由这些改变触发的监听函数方法。
+本小节，我将会阐述 nx-observe 的底层实现。首先，我将会向你展示监听函数是如何检测和比对可监听对象的属性值的改变的。然后我将会阐述一个运行由这些改变所触发的监听函数方法。
 
-### 注册改变
+### 注册变化
 
 变化的是由把被监听对象封装为 ES6 代理来注册的。这些代理使用 [Reflection API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect) 无缝地拦截 get 和 set 操作。
 
-以下代码使用 `currentObserver` 和 `queueObserver()`，但是只会在下一小节中进行解释。现在只需要知道的是 `currentObserver` 问题指向目前运行的监听函数，而 `queueObserver()` 把将要执行的监听函数插入队列。
+以下代码使用 `currentObserver` 变量和 `queueObserver()`，但是只会在下一小节中进行解释。现在只需要知道的是 `currentObserver 总是指向目前运行的监听函数，而 `queueObserver()` 把将要执行的监听函数插入队列。
 
 ```
 /* maps observable properties to a Set of
@@ -98,11 +98,11 @@ function set (target, key, value, receiver) {
 }
 ```
 
-如果 ` currentObserver` 没有设置则  `get` 陷阱不做任何事。否则，它配对获取的可监听属性和目前运行的监听函数然后把它们保存入监听者 WeakMap。监听者会被存入每个被监听对象属性的 `Set` 。这样可以保证没有重复的监听函数。
+如果 ` currentObserver` 没有设置则  `get` 陷阱不做任何事。否则，它配对获取的可监听属性和目前运行的监听函数然后把它们保存入监听者 WeakMap。监听者会被存入每个被监听对象属性的 `Set` 之中。这样可以保证没有重复的监听函数。
 
 `set` 陷阱函数获得所有改变了值的被监听者属性配对的监听函数并且把他们插入队列以备之后执行。
 
-你可以找到一个图像和一步步描述解释 nx-observe 的如下示例代码。
+你可以找到一个图像和一步步描述解释 nx-observe 的示例代码如下。
 
 ![](./assets/writing-a-javascript-framework-data-binding-with-es6-proxy-observables-code.png)
 
@@ -111,22 +111,22 @@ function set (target, key, value, receiver) {
 - `print` 开始执行
 - `print` 中获得 `person.name`
 - `person` 中的 代理 `get` 陷阱函数被调用
-- `observers.get(person).get('name')` 获得 `(person, name)` 对的监听集
-- `currentObserver`（print）被加入监听集
-- 当 `person.age` 执行步骤 4-7 再次运行
-- `${person.name}, ${person.age}` 在控制台输出
+- `observers.get(person).get('name')` 获得属于 `(person, name)` 对的监听函数集合
+- `currentObserver`（print）被加入监听集合
+- 当 `person.age` 运行步骤 4-7 再次执行
+- 控制台输出 `${person.name}, ${person.age}` 
 - `print` 结束运行
 - `currentObserver` 被置为 `undefined`
 - 其它代码开始执行
 - `person.age` 被赋值为 22
 - `person` 中的 `set` 代理 陷阱被调用
-- `observers.get(person).get('age')` 获得 `(person, age)` 对中的监听集
+- `observers.get(person).get('age')` 获得 `(person, age)` 对中的监听集合
 - 监听集中的监听函数（包括 `print` ）被插入队列以运行
 - `print` 再次运行
 
 ### 运行监听函数
 
-一个批处理中异步运行排队的监听函数会带来很好的性能。在注册阶段，监听函数被同步加入 `queuedObservers` `Set`。一个 `Set` 不会有发生重复，所以把同一个监听函数多次重复排入不会导致多次运行。如果之前 `Set` 是空的，一个新的任务被计划迭代而在某个时刻之后运行所有的排队监听函数。
+批量异步运行排队的监听函数会带来很好的性能。在注册阶段，监听函数被同步加入 `queuedObservers` `Set`。一个 `Set` 不会有有重复的监听函数，所以把同一个监听函数多次重复排入不会导致多次运行。如果之前 `Set` 是空的，一个新的任务被计划迭代而在某个时刻之后运行所有的排队监听函数。
 
 ```
 /* contains the triggered observer functions,
@@ -170,7 +170,7 @@ function runObserver (observer) {
 }
 ```
 
-以上代码确保无论何时一个监听函数执行，全局的 `currentObserver` 会指向它。设置 `currentObserver` 会打开 `get` 陷阱函数，监听并且把 `currentObserver` 和其运行时使用的所有的可监听的属性进行配对。
+以上代码确保无论何时运行一个监听函数，全局的 `currentObserver` 指向它。设置 `currentObserver` 打开 `get` 陷阱函数，监听并且把 `currentObserver` 和其运行时使用的所有的可监听的属性进行配对。
 
 ## 构建一个动态的可监听树
 
@@ -207,25 +207,25 @@ function get (target, key, receiver) {
 }
 ```
 
-以上 `ge` 陷阱函数在如果返回值是一个对象的时候会返回之前把返回值设置一个可监听的代理。从性能观点来看这也是相当完美的方案，因为可监听对象公当它们真的需要为监听函数所需要的时候才创建。
+以上 `get` 陷阱函数如果返回值是一个对象的时候会在返回之前把返回值设置一个可监听的代理对象。从性能观点来看这也是相当完美的方案，因为可监听对象仅当监听函数需要的时候才创建。
 
 ## 和 ES5 技术对比
 
-除了 ES6 代理还有一个类似的数据绑定技术可以用 ES5 的属性存取器（getter/setter）来实现。许多流行框架使用这类技术比如 [MobX](https://mobxjs.github.io/mobx/) 和 [Vue](https://vuejs.org/)。使用代理而不是存取器主要有两个优点和一个主要的缺点。
+除了 ES6 代理还可以用 ES5 的属性存取器（getter/setter）来实现类似的数据绑定技术。许多流行框架使用这类技术比如 [MobX](https://mobxjs.github.io/mobx/) 和 [Vue](https://vuejs.org/)。使用代理而不是存取器主要有两个优点和一个主要的缺点。
 
 ### Expando 属性
 
 Expando 属性指的是在 JavaScript 中动态添加的属性。ES5 中没有支持 expando 属性因为存取器不得不预定义每个属性来拦截操作。这是为什么拥有预定义的键集的中央存储现在流行起来的技术原因。
 
-另一方面说，代理技术支持 expando 属性，因为每个对象定义代理 并且他们为每个对象的属性拦截操作。
+另一方面说，代理技术支持 expando 属性，因为每个对象定义代理并且他们为每个对象的属性拦截操作。
 
-一个经典的案例即使用数组的时候 expando 属性非常重要。如果不能从数组中添加或者删除数组元素 JavaScript 中的数组就会很鸡肋。ES5 数据兄弟派个人发烧友经常通过提供自定义或者重写 `Array` 方法来解决这个问题。
+一个经典的案例即使用数组的时候 expando 属性非常重要。如果不能从数组中添加或者删除数组元素 JavaScript 中的数组就会很鸡肋。ES5 数据绑定技术经常通过提供自定义或者重写 `Array` 方法来解决这个问题。
 
-### 存和取器
+### Getters and setters
 
-使用 ES5 方法的库使用一些特殊的语法来提供 computed 绑定属性。这些属性拥有原生的等同物即存和取器。然而 ES5 方法内部使用 getters/setters 来创建数据绑定逻辑，所以不能够和属性存取器一起工作。
+使用 ES5 方法的库使用一些特殊的语法来提供 computed 绑定属性。这些属性拥有原生的等同物即 getters and setters。然而 ES5 方法内部使用 getters/setters 来创建数据绑定逻辑，所以不能够和属性存取器一起工作。
 
-代理 拦截各种属性访问和改变包括 getters 和 setters，所以它不会和 ES6 方法起冲突。
+代理拦截各种属性访问和改变包括 getters 和 setters，所以它不会给 ES6 方法带来问题。
 
 ### 缺点
 
@@ -233,23 +233,23 @@ Expando 属性指的是在 JavaScript 中动态添加的属性。ES5 中没有�
 
 ## 一些注意事项
 
-这里介绍的数据绑定方法只是一个可运行的版本，但是为了让其容易消化我做了一个简化。你可以在以下找到一些为简化而剥离的主题所需要注意的事项。
+这里介绍的数据绑定方法只是一个可运行的版本，但是为了让其易懂我做了一个简化。你可以在以下找到一些因为简化而剥离的相关主题需要注意的事项。
 
 ### 内存清理
 
 内存泄漏是恼人的。这里的代码避免了这一问题因为它使用 `WeakMap` 来保存监听函数。这意味着可监听对象相关联的监听函数会和被监听对象一起被垃圾回收。
 
-然而，一个可能的使用例子是一个集中，持久化的存储有一个频繁移动 DOM 在它上面。在这个情况下 DOM 节点在内存垃圾回收前必须释放所有的注册的监听器。示例中没有写上这个功能，但你可以在 [nx-observe code](https://github.com/RisingStack/nx-observe/blob/master/observer.js) 中检查 `unobserve()` 是如何实现的。
+然而，一个可能的用例是一个集中，持久化的存储有一个频繁移动 DOM 在它上面。在这个情况下 DOM 节点在内存垃圾回收前必须释放所有的注册的监听函数。示例中没有写上这个功能，但你可以在 [nx-observe code](https://github.com/RisingStack/nx-observe/blob/master/observer.js) 中检查 `unobserve()` 是如何实现的。
 
 ### 使用代理进行双重封装
 
-代理是透明的意味着没有原生的方法来决定是代理或者简单对象。还有，它们可以无限嵌套，所以没有必须的预告注意，我们得禁止一次次地封装可监听对象。
+代理是透明的意味着没有原生的方法来决定是对象是代理或者简单对象。还有，它们可以无限嵌套，所以没有必要的预防，我们得禁止一次次地封装可监听对象。
 
 有很多种聪明的方法来把代理对象和一般的对象区分开来，但是我没有在例子中写出。一个方法即是把代理添加入  `WeakSet` 并命名为 `proxies` 然后在之后检查是否包含。如果对 nx-observe 是如何实现 `isObservable` 有兴趣的可以查看[这里](https://github.com/RisingStack/nx-observe/blob/master/observer.js)。
 
 ### 继承
 
-nx-observe 也支持原型链继承。如下例子阐述了继承是如何运作的。
+nx-observe 也支持原型链继承。如下例子演示了继承是如何运作的。
 
 ```
 const parent = observable({greeting: 'Hello'})
@@ -275,17 +275,17 @@ setTimeout(() => child.greeting = 'Look', 200)
 
 `get` 操作在每个原型链上的成员被调用直到属性被找到，所以监听器在每个需要的地方被注册。
 
-有些极端情况是由一些极少见的事实是由 `set` 操作也会遍历原型链（相当隐蔽）所引起的，但这里将不再阐述。
+有些极端情况是由一些极少见的情况是由 `set` 操作也会遍历原型链（相当隐蔽）所引起的，但这里将不再阐述。
 
 ### 内部属性
 
-代理 也拦截内部属性访问。你的代码可能会使用一些你经常不认为会内部属性的内部属性。比如 [well-known Symbols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) 即是这样的属性。类似的属性经常会被代理正确地拦截，但是也有一些奇怪的情况。
+代理也可以拦截内部属性访问。你的代码可能会使用一些你经常甚至不认为是内部属性的属性。比如 [well-known Symbols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) 即是这样的属性。类似的属性经常会被代理正确地拦截，但是也有一些奇怪的情况。
 
 ### 异步本质
 
 当 `set` 操作被拦截的时候，监听器可以同步执行。这将会带来几个优点如减少复杂性，精确定时和好的堆栈追踪，但是它在一些情况下会引起巨大的麻烦。
 
-想象下你在一个循环中往一个被监听的数组压入 1000 个对象。数组长度会改变 1000 次并且与之相关的监听器会也会在一个快速的连续执行 1000 次。这意味着运行完全相同的函数集 1000 次，这是毫无用处的。
+想象下你在一个循环中往一个被监听的数组压入 1000 个对象。数组长度会改变 1000 次并且与之相关的监听器会也会紧接着连续执行 1000 次。这意味着运行完全相同的函数集 1000 次，这是毫无用处的。
 
 ```
 const observable1 = observable({prop: 'value1'})
@@ -305,4 +305,4 @@ observe(() => observable1.prop = observable2.prop)
 observe(() => observable2.prop = observable1.prop)
 ```
 
-基于这些原因 nx-observe 把不重复排队监听函数然后把它们作为微任务进行执行以防止 [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content)。如果你不熟悉微任务的概念，可以查阅之前关于浏览器中的定时的文章。
+基于这些原因 nx-observe 不重复地把监听函数插入队列然后把它们作为微任务批量运行以防止 [FOUC](https://en.wikipedia.org/wiki/Flash_of_unstyled_content)。如果你不熟悉微任务的概念，可以查阅之前关于浏览器中的定时的文章。
