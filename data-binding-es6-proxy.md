@@ -112,7 +112,7 @@ function set (target, key, value, receiver) {
 - `print` 中获得 `person.name`
 - `person` 中的 代理 `get` 陷阱函数被调用
 - `observers.get(person).get('name')` 获得属于 `(person, name)` 对的监听函数集合
-- `currentObserver`(print)被加入监听集合中
+- `currentObserver`(print) 被加入监听集合中
 - 对 `person.age` 再次执行步骤 4-7 
 - 控制台输出 `${person.name}, ${person.age}` 
 - `print` 结束运行
