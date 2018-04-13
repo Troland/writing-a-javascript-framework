@@ -13,21 +13,21 @@ ES6 让 JavaScript 更加优雅，但是其中大多数新功能只是一个语�
 [nx-observe](https://github.com/RisingStack/nx-observe) 是一个 140 行代码的数据绑定方案。它公开了 `observable(obj)` 和 `observe(fn)` 函数，用来创建可监听对象和监听函数。监听函数会在被监听对象的属性值发生改变的时候自动执行。如下例子演示了这个过程。
 
 ```
-// this is an observable object
+// 这是一个可观察对象
 const person = observable({name: 'John', age: 20})
 
 function print() {
   console.log(`${person.name}, ${person.age}`)
 }
 
-// this creates an observer function
-// outputs 'John, 20' to the console
+// 创建一个监听函数
+// 控制台输出 'John, 20'
 observe(print)
 
-// outputs 'Dave, 20' to the console
+// 控制台输出 'Dave, 20'
 setTimeout(() => person.name = 'Dave', 100)
 
-// outputs 'Dave, 22' to the console
+// 控制台输出 'Dave, 22'
 setTimeout(() => person.age = 22, 200)
 ```
 
@@ -46,25 +46,21 @@ setTimeout(() => person.age = 22, 200)
 以下代码使用 `currentObserver` 变量和 `queueObserver()`，但是只会在下一小节中进行解释。现在只需要知道的是 `currentObserver` 总是指向目前运行的监听函数，而 `queueObserver()` 把将要执行的监听函数插入队列。
 
 ```
-/* maps observable properties to a Set of
-observer functions, which use the property */
+/* 映射被监听对象属性到监听函数集，监听函数集会使用监听对象属性 */
 const observers = new WeakMap()
 
-/* points to the currently running 
-observer function, can be undefined */
+/* 指向当前运行的监听函数可以为 undefined */
 let currentObserver
 
-/* transforms an object into an observable 
-by wrapping it into a proxy, it also adds a blank
-Map for property-observer pairs to be saved later */
+/* 利用把对象封装为一个代理来把对象转换为一个可监听对象，
+它也可以添加一个空白映射来为以后保存被监听对象－监听函数对。
+*/
 function observable (obj) {
   observers.set(obj, new Map())
   return new Proxy(obj, {get, set})
 }
 
-/* this trap intercepts get operations,
-it does nothing if no observer is executing
-at the moment */
+/* 这个陷阱拦截 get 操作，如果当前没有执行监听函数它不做任何事 */
 function get (target, key, receiver) {
   const result = Reflect.get(target, key, receiver)
    if (currentObserver) {
@@ -73,10 +69,8 @@ function get (target, key, receiver) {
   return result
 }
 
-/* if an observer function is running currently,
-this function pairs the observer function 
-with the currently fetched observable property
-and saves them into the observers Map */
+/* 如果一个监听函数正在运行，这个函数会配对监听函数和当前取得的被
+监听对象属性，并保存到一个监听函数映射之中 */
 function registerObserver (target, key, observer) {
   let observersForKey = observers.get(target).get(key)
   if (!observersForKey) {
@@ -86,9 +80,7 @@ function registerObserver (target, key, observer) {
   observersForKey.add(observer)
 }
 
-/* this trap intercepts set operations,
-it queues every observer associated with the
-currently set property to be executed later */
+/* 这个陷阱拦截 set 操作，它把每个关联当前 set 属性的监听函数加入队列以备之后执行 */
 function set (target, key, value, receiver) {
   const observersForKey = observers.get(target).get(key)
   if (observersForKey) {
