@@ -53,7 +53,7 @@ const observers = new WeakMap()
 let currentObserver
 
 /* 利用把对象封装为一个代理来把对象转换为一个可监听对象，
-它也可以添加一个空白映射来为以后保存被监听对象－监听函数对。
+它也可以添加一个空白映射，用作以后保存被监听对象－监听函数对。
 */
 function observable (obj) {
   observers.set(obj, new Map())
