@@ -12,6 +12,6 @@
 
 ## 来杯咖啡
 
-[捐助我(微信)](./assets/i-wechat.png)
+[捐助我(微信)](https://user-images.githubusercontent.com/1475173/39087420-419a67e6-45d3-11e8-894a-1db42f6b8733.png)。
 
-[捐助我(支付宝)](./assets/i-alipay.png) 
+[捐助我(支付宝)](https://user-images.githubusercontent.com/1475173/39087436-8df386ae-45d3-11e8-97e3-4595b2297d96.png)。
