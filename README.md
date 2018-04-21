@@ -9,3 +9,9 @@
 ## [目录结构](https://github.com/Troland/writing-a-javascript-framework/wiki)
 
 文章均以 [wiki](https://github.com/Troland/writing-a-javascript-framework/wiki) 形式展现。
+
+## 来杯咖啡
+
+[捐助我(微信)](./assets/i-wechat.png)
+
+[捐助我(支付宝)](./assets/i-alipay.png) 
