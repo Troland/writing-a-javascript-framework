@@ -1,5 +1,7 @@
 # 前端路由
 
+> 原文详见[这里](https://blog.risingstack.com/writing-a-javascript-framework-client-side-routing/)，本文采用[知识共享署名 3.0 中国大陆许可协议](http://creativecommons.org/licenses/by/3.0/cn/)共享，BY Troland(https://github.com/Troland)。
+
 **这是编写前端框架系列的最后一章。本章，我将会讨论前端路由和后端路由的不同以及为什么他们应被区别对待。**
 
 ## 网页上的路由

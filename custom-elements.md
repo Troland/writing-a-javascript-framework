@@ -1,5 +1,7 @@
 # 自定义元素的好处
 
+> 原文详见[这里](https://blog.risingstack.com/writing-a-javascript-framework-the-benefits-of-custom-elements/)，本文采用[知识共享署名 3.0 中国大陆许可协议](http://creativecommons.org/licenses/by/3.0/cn/)共享，BY Troland(https://github.com/Troland)。
+
 **这是编写一个 JavaScript 框架系列的第六章。本章，我将会讨论自定义元素的好处和它们在现代前端框架核心内的可能角色。**
 
 ## 组件的时代
@@ -156,7 +158,7 @@ observer.observe(MyComponentInstance, {
 - 使用 MutationObservers 创建 api ，然后当需要的时候使用自定义元素来添加一些性能改进
 
 我选择后者，因为 MutationObservers 是检测子元素改变的必要条件，即使在完全支持自定义元素的浏览器中也是如此。
- 
+
 
 我为下一版本的 NX 使用的系统简单地在旧浏览器的文档添加一个 MutationObserver。然而在现代浏览器中，该系统使用自定义元素为最顶层的组件创建钩子，并且在他们的 `connectedCallback` 钩子中添加一个 `MutationObserver`。这个 MutationObserver 可以用来扮演在组件内部检测进一步的 DOM 变化的角色。
 
