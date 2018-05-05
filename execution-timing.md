@@ -1,6 +1,6 @@
 ## 除了 setTimeout 以外的运行定时
 
-> 原文详见[这里](https://blog.risingstack.com/writing-a-javascript-framework-execution-timing-beyond-settimeout/)，本文采用[知识共享署名 3.0 中国大陆许可协议](http://creativecommons.org/licenses/by/3.0/cn/)共享，BY Troland(https://github.com/Troland)。
+> 原文详见[这里](https://blog.risingstack.com/writing-a-javascript-framework-execution-timing-beyond-settimeout/)，本文采用[知识共享署名 3.0 中国大陆许可协议](http://creativecommons.org/licenses/by/3.0/cn/)共享，BY [Troland](https://github.com/Troland)。
 
 本章会阐述浏览器端执行异步代码的各种不同方法。你将会了解到关于事件循环和定时技术比如 setTimeout 和 Promises 之间的差别。**
 

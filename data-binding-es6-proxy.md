@@ -1,6 +1,6 @@
 # 使用 ES6 代理创建数据绑定
 
-> 原文详见[这里](https://blog.risingstack.com/writing-a-javascript-framework-data-binding-es6-proxy/)，本文采用[知识共享署名 3.0 中国大陆许可协议](http://creativecommons.org/licenses/by/3.0/cn/)共享，BY Troland(https://github.com/Troland)。
+> 原文详见[这里](https://blog.risingstack.com/writing-a-javascript-framework-data-binding-es6-proxy/)，本文采用[知识共享署名 3.0 中国大陆许可协议](http://creativecommons.org/licenses/by/3.0/cn/)共享，BY [Troland](https://github.com/Troland)。
 
 **这是编写 JavaScript 框架系列的第五章。本章将会阐述如何使用 ES6 代理创建一个简单且强大的数据绑定库**
 
