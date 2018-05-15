@@ -1,6 +1,6 @@
 # 除了脏检查之外的数据绑定简介
 
-> 原文详见[这里](https://blog.risingstack.com/writing-a-javascript-framework-data-binding-dirty-checking/)，本文采用[知识共享署名 3.0 中国大陆许可协议](http://creativecommons.org/licenses/by/3.0/cn/)共享，BY [Troland](https://github.com/Troland)。
+> 原文详见[这里](https://blog.risingstack.com/writing-a-javascript-framework-data-binding-dirty-checking/)，本文采用[知识共享署名 4.0 国际许可协议](http://creativecommons.org/licenses/by/4.0/)共享，BY [Troland](https://github.com/Troland)。
 
 **这是编写 JavaScript 框架系列第四章。本章将会阐述脏检查和数据存取器绑定技术，并指出他们的优缺点。**
 

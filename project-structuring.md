@@ -1,6 +1,6 @@
 # 项目结构
 
-> 原文详见[这里](https://blog.risingstack.com/writing-a-javascript-framework-project-structuring/)，本文采用[知识共享署名 3.0 中国大陆许可协议](http://creativecommons.org/licenses/by/3.0/cn/)共享，BY [Troland](https://github.com/Troland)。
+> 原文详见[这里](https://blog.risingstack.com/writing-a-javascript-framework-project-structuring/)，本文采用[知识共享署名 4.0 国际许可协议](http://creativecommons.org/licenses/by/4.0/)共享，BY [Troland](https://github.com/Troland)。
 
 虽然有一些通用的项目结构指南，但是没有适合所有项目的结构。有兴趣的童鞋可以看看来自Node Hero系列的 [Nodejs 项目结构指南](https://blog.risingstack.com/node-hero-node-js-project-structure-tutorial/)。
 
