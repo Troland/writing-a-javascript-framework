@@ -12,7 +12,7 @@
 
 ## 事件循环
 
-事件循环在 [ES6 规范](http://www.ecma-international.org/ecma-262/6.0/) 中并没有的提及。JavaScript 本身只有任务和任务队列的概念。更复杂的事件循环的概念分别定义在 NodeJS 和 [HTML5 规范](https://www.w3.org/TR/2016/CR-html51-20160621/webappapis.html#event-loops)中。因为此系列是讲的前端，所以在这里我将会阐述后者。
+事件循环在 [ES6 规范](http://www.ecma-international.org/ecma-262/6.0/) 中并没有的提及。JavaScript 本身只有作业和作业队列的概念。更复杂的事件循环的概念分别定义在 NodeJS 和 [HTML5 规范](https://www.w3.org/TR/2016/CR-html51-20160621/webappapis.html#event-loops)中。因为此系列是讲的前端，所以在这里我将会阐述后者。
 
 事件循环被称为一个循环，是有一个原因的。它无限循环并寻找新任务来执行。该循环的单次遍历叫做一个 tick。在tick 期间执行的代码叫一个任务（task）。
 
